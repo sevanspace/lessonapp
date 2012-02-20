@@ -1,0 +1,54 @@
+<% 
+association_model = association.camelize.singularize.constantize
+association_objects = thing.send( association )
+un_associated_objects = association_model.find(:all).delete_if{ | each_assoc_obj |     association_objects.include?(  each_assoc_obj   )   }
+[un_associated_objects, association_objects ].each{|sort_me|  sort_me.sort!{|x,y| x.send( association_attr ) <=> y.send( association_attr ) }  } 
+%>
+<% unless thing.new_record? %>
+  <div id="m2m"  >
+	<div>
+	  <h3>available <%= association_model.to_s.pluralize.downcase %></h3>
+	  <ul  id="available"> 
+		<% if un_associated_objects.length==0 %>
+		  <li>(empty)</li>
+		<% else %>
+			<%  un_associated_objects.each do | assoc | %>
+			<li id="<%= "#{assoc.id}" %>"  class="<%= "#{association_model}" %>">
+	   <%= assoc.send( association_attr ) %> 
+	   </li>
+			<%= draggable_element "#{assoc.id}", :revert => false %>
+	<% end %>
+  <% end %>
+	  </ul>
+	</div>
+	<div>
+	  <h3>assigned <%= association_model.to_s.pluralize.downcase %></h3> 
+	  <ul id="assigned">
+		<% if association_objects.length==0 %>
+		  <li>(empty)</li>
+		<% else %>
+				<% association_objects.each do | assoc | %>
+			<li   id="<%= "#{assoc.id}" %>"  class="assigned_<%= "#{association_model}" %>" >
+		 <%= assoc.send( association_attr ) %>
+		 </li>
+			<%= draggable_element "#{assoc.id}", :revert => false %>
+	<% end %> 
+  <% end %> 
+	  </ul> 
+	</div>
+  
+	   <%= drop_receiving_element "available", 
+					   :update => "m2m_container",  
+					   :url => { :action => "m2m" },
+					   :accept => "assigned_#{association_model}",
+					   :with => "'add_or_remove=remove&thing_model=#{thing.class}&thing_id=#{thing.id}&association=#{association}&association_id=' + encodeURIComponent(element.id) + '&association_attr=#{association_attr}'"
+	   %>
+	   <%= drop_receiving_element "assigned", 
+					   :update => "m2m_container",  
+					   :url => { :action => "m2m" },
+					   :accept => "#{association_model}",
+					   :with => "'add_or_remove=add&thing_model=#{thing.class}&thing_id=#{thing.id}&association=#{association}&association_id=' + encodeURIComponent(element.id) + '&association_attr=#{association_attr}'"
+	   %>
+  
+  </div><br class="clear">
+<% end %>

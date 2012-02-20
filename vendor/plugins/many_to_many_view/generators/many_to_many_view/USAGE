@@ -1,0 +1,7 @@
+Description:
+
+Example:
+    ./script/generate many_to_many_view 
+
+    This will create:
+        app/views/shared/_m2m.html.erb

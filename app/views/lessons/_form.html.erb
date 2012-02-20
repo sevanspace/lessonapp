@@ -1,0 +1,41 @@
+<%= form_for(@lesson) do |f| %>
+  <% if @lesson.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
+
+      <ul>
+      <% @lesson.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+  	<%= f.label :topic %>
+  	<%= f.collection_select(:topic_id, Topic.all, :id, :title) %>
+  </div>
+  
+ <!--> <div class="field">
+  	<%= f.label "Prereqs" %>
+  	<%= f.collection_select(:title, Lesson.all, :id, )%>
+ </div> -->
+  
+  
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br />
+    <%= f.text_area :content %>
+  </div>
+  <div class="field">
+    <%= f.label :row %><br />
+    <%= f.number_field :row %>
+  </div>
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

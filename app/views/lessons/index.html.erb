@@ -1,0 +1,54 @@
+<h1>Listing lessons</h1>
+
+<table border="3" bordercolor="black">
+	<tr><!-- put topic titles in top row-->
+		<% @topics.each do |topic| %>
+			<td>
+				<%= link_to topic.title, edit_topic_path(topic) %>
+			</td>
+		<% end %>
+		<td>
+			<%= link_to 'New Topic', new_topic_path %>
+		</td>
+	</tr>
+	<!--<% if Lesson.exists? %>-->
+		<%= render 'chart' %>
+	<!--<% end %>-->
+</table>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<table>
+  <tr>
+    <th>Topic ID</th>
+    <th>Title</th>
+    <th>Content</th>
+    <th>Row</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @lessons.each do |lesson| %>
+  <tr>
+    <td><%= lesson.topic_id %></td>
+    <td><%= lesson.title %></td>
+    <td><%= lesson.content %></td>
+    <td><%= lesson.row %></td>
+    <td><%= link_to 'Show', lesson %></td>
+    <td><%= link_to 'Edit', edit_lesson_path(lesson) %></td>
+    <td><%= link_to 'Destroy', lesson, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Lesson', new_lesson_path %>

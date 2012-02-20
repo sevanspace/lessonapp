@@ -1,0 +1,13 @@
+<% (1..Lesson.maximum("row")).each do |row| %>
+	<tr bordercolor="red">
+		<% (1..Topic.maximum("id")).each do |id| %>
+			<td bordercolor="blue">
+				<% cell(row, id).each do |lesson| %>
+					
+						<%= link_to lesson.title, edit_lesson_path(lesson)%>
+					
+				<% end %>
+			</td>
+		<% end %>	
+	</tr>
+<% end %>
